@@ -1,3 +1,6 @@
+-- think of group by as assign "category" to the items that I want to group by
+
+
 /*
 - calculate the total quantity sold and the total sale_amount for each category.
 - return columns for the category, the sum of quantity as total_quantity, and the sum of sale_amount as total_sales_amount. 
