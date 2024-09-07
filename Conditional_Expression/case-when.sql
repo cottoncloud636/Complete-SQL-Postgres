@@ -94,3 +94,78 @@ group by season_flights
 
 
 
+/******** Problem 4 ********/
+/*
+Create a tier list in the following way:
+1. Rating is 'PG' or 'PG-13' or length is more then 210 min: 'Great rating or long (tier 1)
+2. Description contains 'Drama' and length is more than 90min:  'Long drama (tier 2)'
+3. Description contains 'Drama' and length is not more than 90min: 'Shcity drama (tier 3)'
+4. Rental_rate less than $1: 'Very cheap (tier 4)'
+
+If one movie can be in multiple categories it gets the higher tier assigned.
+
+How can you filter to only those movies that appear in one of these 4 tiers?
+
+Table -- film, sample:
+
+| film_id | title              | description                                                                                     | release_year | language_id | original_language_id | rental_duration | rental_rate | length | replacement_cost | rating | last_update               | special_features                      | fulltext                                                        |
+|---------|--------------------|-------------------------------------------------------------------------------------------------|--------------|-------------|----------------------|-----------------|-------------|--------|------------------|--------|---------------------------|---------------------------------------|-----------------------------------------------------------------|
+| 1       | ACADEMY DINOSAUR    | A Epic Drama of a Feminist And a Mad Scientist who must Battle a Teacher in The Canadian Rockies | 2006         | 1           | NULL                 | 6               | 0.99        | 86     | 20.99            | PG     | 2020-09-10 18:46:03.905795 | {'Deleted Scenes','Behind the Scenes'} | 'academi':1 'dinosaur':2 'drama':5 'feminist':8 'mad':11 ...    |
+| 2       | ACE GOLDFINGER      | A Astounding Epistle of a Database Administrator And a Explorer who must Find a Car in Ancient China | 2006         | 1           | NULL                 | 3               | 4.99        | 48     | 12.99            | G      | 2020-09-10 18:46:03.905795 | {'Trailers','Deleted Scenes'}         | 'ace':1 'administr':4 'ancient':7 'car':17 ...                 |
+| 3       | ADAPTATION HOLES    | A Astounding Reflection of a Lumberjack And a Car who must Sink a Lumberjack in a Baloon Factory | 2006         | 1           | NULL                 | 7               | 2.99        | 50     | 18.99            | NC-17  | 2020-09-10 18:46:03.905795 | {'Trailers','Deleted Scenes'}         | 'adapt':1 'astound':4 'baloon':9 'car':11 ...                  |
+| 4       | AFFAIR PREJUDICE    | A Fanciful Documentary of a Frisbee And a Lumberjack who must Chase a Monkey in A Shark Tank     | 2006         | 1           | NULL                 | 5               | 2.99        | 117    | 26.99            | G      | 2020-09-10 18:46:03.905795 | {'Commentaries','Behind the Scenes'}   | 'affair':1 'chase':16 'documentari':4 'frisbie':8 'monkey':16 ...|
+*/
+
+select 
+	title,
+	case
+		when rating in ('PG', 'PG-13') or length>120 then 'Great rating or long (tier 1)'
+		when description like '%Drama%' and length>90 then 'Long drama (tier 2)'
+		when description like '%Drama%' and length<=90 then 'Shcity drama (tier 3)'
+		when rental_rate<1.0 then 'Very cheap (tier 4)'
+	end as tier_list
+from film
+/*where tier_list is not null*/ -- this is not allowed, 'where' can't use case-when alias
+where 
+	case
+		when rating in ('PG', 'PG-13') or length>120 then 'Great rating or long (tier 1)'
+		when description like '%Drama%' and length>90 then 'Long drama (tier 2)'
+		when description like '%Drama%' and length<=90 then 'Shcity drama (tier 3)'
+		when rental_rate<1.0 then 'Very cheap (tier 4)'
+	end is not null
+
+-- output report, sample:
+
+| title            | tier_list                           |
+|------------------|-------------------------------------|
+| ACADEMY DINOSAUR | Great rating or long (tier 1)       |
+| AFRICAN EGG      | Great rating or long (tier 1)       |
+| AGENT TRUMAN     | Great rating or long (tier 1)       |
+| AIRPLANE SIERRA  | Great rating or long (tier 1)       |
+| ALABAMA DEVIL    | Great rating or long (tier 1)       |
+| ALAMO VIDEOTAPE  | Great rating or long (tier 1)       |
+| ALASKA PHANTOM   | Great rating or long (tier 1)       |
+| DATE SPEED       | Very cheap (tier 4)                 |
+| ALI FOREVER      | Great rating or long (tier 1)       |
+| ALICE FANTASIA   | Long drama (tier 2)                 |
+| ALIEN CENTER     | Shcity drama (tier 3)               |
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
