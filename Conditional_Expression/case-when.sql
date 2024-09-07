@@ -54,3 +54,43 @@ from bookings
 group by price_ticket
 order by count_ticket
 
+
+	
+	
+/******** Problem 3 ********/
+/*
+Find out how many flights have departed in the following seasons:
+• Winter: December, January, Februar
+• Spring: March, April, May
+• Summer: June, July, August
+• Fall: September, October, November
+
+Table -- flights, sample:
+	
+| flight_id | flight_no | scheduled_departure | scheduled_arrival | departure_airport | arrival_airport | status     | aircraft_code | actual_departure | actual_arrival |
+|-----------|-----------|---------------------|-------------------|-------------------|-----------------|------------|---------------|------------------|----------------|
+| 1185      | PG0134    | 9/9/2017 23:50      | 9/10/2017 4:55    | DME               | BTK             | Scheduled  | 319           | NULL             | NULL           |
+| 3979      | PG0052    | 8/25/2017 4:50      | 8/25/2017 7:35    | VKO               | HMA             | Scheduled  | CR2           | NULL             | NULL           |
+| 4739      | PG0561    | 9/5/2017 2:30       | 9/5/2017 4:15     | VKO               | AER             | Scheduled  | 763           | NULL             | NULL           |
+| 5502      | PG0529    | 9/11/2017 23:50     | 9/12/2017 1:20    | SVO               | UFA             | Scheduled  | 763           | NULL             | NULL           |
+
+*/
+select 
+	count(*),
+	case
+		when extract(month from actual_departure) in (12,1,2) then 'Winter'
+		when extract(month from actual_departure) in (3,4,5) then 'Spring'
+		when extract(month from actual_departure) in (6,7,8) then 'Summer'
+		else 'Fall'
+	end as season_flights
+from flights
+group by season_flights
+
+-- output report:
+| number_departures | season_flights |
+|-------------------|----------------|
+| 16348             | "Fall"         |
+| 16773             | "Summer"       |
+
+
+
