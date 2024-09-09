@@ -1,4 +1,4 @@
--- right outer join : is essentially the same as left outer join (by reverving the order of table). Hence, most of the time, use left outer join is enough.
+-- right outer join : is essentially the same as left outer join (by reversing the order of table). Hence, most of the time, use left outer join is enough.
 -- basic syntax:
             /*
 
